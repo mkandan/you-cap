@@ -53,13 +53,14 @@ async def downloadAndUpload():
         res = storage_client.from_('audio').upload(f'{file_path}', file_path,)
         print('res', res)
 
-    # update row's history in audio table
+    # prep supabase client for updating history
     supabase: Client = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_API_KEY'))
-    # update history with current utc time
+    # prep updated history with current utc time
     utc_now = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     existing_history = supabase.table('audio').select('history').eq('video_id', file_name).execute()
     updated_history = existing_history.data[0]['history']
     updated_history.append({'type':'downloaded_audio','time': utc_now})
 
+    # update row's history in audio table
     res = supabase.table('audio').update({"history": updated_history}).eq('video_id', file_name).execute()
     return {"res": res}
