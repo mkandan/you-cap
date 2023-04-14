@@ -1,4 +1,4 @@
-from fastapi import FastAPI 
+from fastapi import FastAPI, HTTPException
 from yt_dlp import YoutubeDL
 import os
 from dotenv import load_dotenv
@@ -13,18 +13,16 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-@app.get("/downloadFromStorageAndGenerateNewCaption")
-async def downloadFromStorageAndGenerateNewCaption():
-    # parameters: video_id, desired_language
+@app.get("/download-from-storage-and-generate-new-caption")
+async def download_from_storage_and_generate_new_caption(video_id: str, desired_language: str, generate_caption_job_id: int):
     # get default_language by doing a db query on video_id
     return {"message": "WIP"}
 
-@app.get("/downloadAndUploadAndGenerateCaption")
-async def downloadAndUploadAndGenerateCaption():
-    # parameters: desired_language, download_audio_job_id, generate_caption_job_id
-    desired_language = 'en'
-    download_audio_job_id=36
-    generate_captions_job_id=37
+@app.get("/download-from-YT-and-upload-and-generate-caption")
+async def download_from_YT_and_upload_and_generate_caption(desired_language: str, download_audio_job_id: int, generate_captions_job_id: int):
+    # desired_language = 'en'
+    # download_audio_job_id=36
+    # generate_captions_job_id=37
 
     dotenv_path = 'dot.env'
     load_dotenv(dotenv_path)
