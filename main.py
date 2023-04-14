@@ -6,8 +6,10 @@ from storage3 import create_client as create_client_storage
 from supabase import StorageException, create_client, Client
 import datetime
 import whisper_timestamped as whisper
+from mangum import Mangum
 
 app = FastAPI()
+handler = Mangum(app)
 
 @app.get("/")
 async def root():
