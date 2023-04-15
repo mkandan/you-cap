@@ -1,18 +1,31 @@
-# pytube implementation for Google App Engine (GAE)
+# pytube x openai whisper (it's really faster_whisper) for Google App Engine (GAE)
+
+why? avoid Open API token usage by using GCP free tier
+
+some aws lambda instructions included at bottom, but i couldnt reduce the package/dependecy library size to 50mb zipped for the life of me.
 
 ## Run locally (after installing pip dependencies)
 
 `gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app`
 or
 `uvicorn main:app --reload`
-then invoke the API with
-`curl http://127.0.0.1:8000/pytube-download`
+then invoke the API with...
+
+## API endpoints (Routes)
+
+#### pytube-download
+
+`curl http://127.0.0.1:8000/pytube-download` to download a youtube video's audio
+
+#### pytube-download-and-upload
+
+`curl http://127.0.0.1:8000/download-from-YT-and-upload-and-generate-caption` to download a youtube video and pump through [faster_whisper](https://github.com/guillaumekln/faster-whisper) to generate timestamped captions
 
 ## GCP App Engine Instructions
 
 youtube tutorial i started with: https://tutlinks.com/deploy-fastapi-app-on-google-cloud-platform/
 
-### GCP App Enginer pricing resources
+### GCP App Engine pricing resources
 
 pricing calculator: https://cloud.google.com/products/calculator  
 free tier: https://cloud.google.com/free/docs/free-cloud-features#app-engine  
