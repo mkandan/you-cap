@@ -1,10 +1,6 @@
-# Build instructions
+# pytube implementation for Google App Engine (GAE)
 
-`pip install -t lib -r requirements.txt
-(cd lib; zip ../lambda_function.zip -r .)
-zip lambda_function.zip -u main.py`
-
-## Run locally
+## Run locally (after installing pip dependencies)
 
 `gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app`
 or
@@ -54,3 +50,9 @@ gcloud app browse`
 3. Lob main.py into the zip
 
 `zip lambda_function.zip -u main.py`
+
+#### All together now
+
+`pip install -t lib -r requirements.txt
+(cd lib; zip ../lambda_function.zip -r .)
+zip lambda_function.zip -u main.py`
