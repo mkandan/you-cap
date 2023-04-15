@@ -1,5 +1,4 @@
 fastapi
 uvicorn
-mangum
 yt-dlp
 faster_whisper

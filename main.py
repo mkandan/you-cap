@@ -2,12 +2,10 @@ from fastapi import FastAPI, HTTPException
 from yt_dlp import YoutubeDL
 import os
 from faster_whisper import WhisperModel
-from mangum import Mangum
 import time
 import sys
 
 app = FastAPI()
-handler = Mangum(app)
 
 @app.get("/")
 async def root():
