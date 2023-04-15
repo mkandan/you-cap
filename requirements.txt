@@ -1,0 +1,5 @@
+fastapi
+gunicorn
+uvicorn
+pytube
+faster_whisper
