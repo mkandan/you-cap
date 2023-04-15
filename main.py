@@ -63,4 +63,4 @@ async def download_from_YT_and_upload_and_generate_caption():
     # delete file from local storage
     os.remove(file_path)
 
-    return {"versino":sys.version,"language":info.language,"language_probability":info.language_probability,"captions": captions,"response_time":(time.time()-start_time)}
+    return {"version":sys.version,"language":info.language,"language_probability":info.language_probability,"captions": captions,"response_time":(time.time()-start_time)}

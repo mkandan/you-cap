@@ -1,4 +1,5 @@
 fastapi
+gunicorn
 uvicorn
 yt-dlp
 faster_whisper

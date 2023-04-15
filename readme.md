@@ -17,3 +17,9 @@ zip lambda_function.zip -u main.py`
 3. Lob main.py into the zip
 
 `zip lambda_function.zip -u main.py`
+
+## Run locally
+
+`gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app`
+or
+`uvicorn main:app --reload`
