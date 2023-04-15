@@ -4,8 +4,10 @@ import os
 from faster_whisper import WhisperModel
 from mangum import Mangum
 import time
+import sys
 
 app = FastAPI()
+handler = Mangum(app)
 
 @app.get("/")
 async def root():
@@ -63,6 +65,4 @@ async def download_from_YT_and_upload_and_generate_caption():
     # delete file from local storage
     os.remove(file_path)
 
-    return {"language":info.language,"language_probability":info.language_probability,"captions": captions,"response_time":(time.time()-start_time)}
-
-handler = Mangum(app)
+    return {"versino":sys.version,"language":info.language,"language_probability":info.language_probability,"captions": captions,"response_time":(time.time()-start_time)}

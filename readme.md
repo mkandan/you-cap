@@ -1,18 +1,18 @@
 # Build instructions
 
-`pip install -t libraries -r requirements.txt
-(cd libraries; zip ../lambda_function.zip -r .)
+`pip install -t lib -r requirements.txt
+(cd lib; zip ../lambda_function.zip -r .)
 zip lambda_function.zip -u main.py`
 
 ### Explained
 
-1. Install requirements into /libraries
+1. Install requirements into /lib
 
-`pip install -t libraries -r requirements.txt`
+`pip install -t lib -r requirements.txt`
 
-2. Recursively zip up /libraries
+2. Recursively zip up /lib
 
-`(cd libraries; zip ../lambda_function.zip -r .)`
+`(cd lib; zip ../lambda_function.zip -r .)`
 
 3. Lob main.py into the zip
 
