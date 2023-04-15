@@ -21,21 +21,21 @@ async def pytube_download():
     start_time = time.time()
     
     yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first()
-    yt.download()
-    file_name=yt.default_filename
+    yt.download(output_path="tmp")
+    file_path='tmp/'+yt.default_filename
 
     # delete file from local storage
-    os.remove(file_name)
+    os.remove(file_path)
 
-    return {"message": "WIP","response_time":(time.time()-start_time),"file_name":file_name}
+    return {"message": "WIP","response_time":(time.time()-start_time)}
 
 @app.get("/download-from-YT-and-upload-and-generate-caption")
 async def download_from_YT_and_upload_and_generate_caption():
     start_time = time.time()
     
     yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first()
-    yt.download()
-    file_path=yt.default_filename
+    yt.download(output_path="tmp")
+    file_path='tmp/'+yt.default_filename
 
     # run audio through faster_whisper
     model_size='tiny' # INT8: 2.4s-2.7s 
