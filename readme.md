@@ -31,7 +31,7 @@ https://tutlinks.com/deploy-fastapi-app-on-google-cloud-platform/
 #### step 1
 
 `rm -rf dubdubs-lambda-py/
-git clone -b gae-pytube https://github.com/mkandan/dubdubs-lambda-py.git
+git clone -b https://github.com/mkandan/dubdubs-lambda-py.git
 cd dubdubs-lambda-py/
 virtualenv env
 source env/bin/activate
