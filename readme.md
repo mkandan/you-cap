@@ -1,5 +1,11 @@
 # Build instructions
 
+`pip install -t libraries -r requirements.txt
+(cd libraries; zip ../lambda_function.zip -r .)
+zip lambda_function.zip -u main.py`
+
+### Explained
+
 1. Install requirements into /libraries
 
 `pip install -t libraries -r requirements.txt`
