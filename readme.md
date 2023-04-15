@@ -23,3 +23,23 @@ zip lambda_function.zip -u main.py`
 `gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app`
 or
 `uvicorn main:app --reload`
+
+## GCP App Engine Instructions
+
+https://tutlinks.com/deploy-fastapi-app-on-google-cloud-platform/
+
+#### step 1
+
+`rm -rf dubdubs-lambda-py/
+git clone -b gae-pytube https://github.com/mkandan/dubdubs-lambda-py.git
+cd dubdubs-lambda-py/
+virtualenv env
+source env/bin/activate
+pip install -r requirements.txt
+gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app`
+
+#### step 2
+
+`gcloud app create
+gcloud app deploy app.yaml
+gcloud app browse`

@@ -6,6 +6,8 @@ import sys
 from pytube import YouTube
 
 app = FastAPI()
+# path_to_tmp_folder = '../../../tmp' # production api
+path_to_tmp_folder = 'tmp' # local api
 
 @app.get("/")
 async def root():
@@ -21,8 +23,8 @@ async def pytube_download():
     start_time = time.time()
     
     yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first()
-    yt.download(output_path="tmp")
-    file_path='tmp/'+yt.default_filename
+    yt.download(output_path=path_to_tmp_folder)
+    file_path=path_to_tmp_folder+'/'+yt.default_filename
 
     # delete file from local storage
     os.remove(file_path)
@@ -34,8 +36,8 @@ async def download_from_YT_and_upload_and_generate_caption():
     start_time = time.time()
     
     yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first()
-    yt.download(output_path="tmp")
-    file_path='tmp/'+yt.default_filename
+    yt.download(output_path=path_to_tmp_folder)
+    file_path=path_to_tmp_folder+'/'+yt.default_filename
 
     # run audio through faster_whisper
     model_size='tiny' # INT8: 2.4s-2.7s 
