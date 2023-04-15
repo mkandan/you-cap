@@ -6,7 +6,6 @@ from mangum import Mangum
 import time
 
 app = FastAPI()
-handler = Mangum(app)
 
 @app.get("/")
 async def root():
@@ -65,3 +64,5 @@ async def download_from_YT_and_upload_and_generate_caption():
     os.remove(file_path)
 
     return {"language":info.language,"language_probability":info.language_probability,"captions": captions,"response_time":(time.time()-start_time)}
+
+handler = Mangum(app)
