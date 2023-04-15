@@ -16,6 +16,13 @@ then invoke the API with
 
 youtube tutorial i started with: https://tutlinks.com/deploy-fastapi-app-on-google-cloud-platform/
 
+### GCP App Enginer pricing resources
+
+pricing calculator: https://cloud.google.com/products/calculator  
+free tier: https://cloud.google.com/free/docs/free-cloud-features#app-engine  
+instance classes: https://cloud.google.com/appengine/docs/standard/#second-gen-runtimes  
+updating `app.yaml` with preferences: https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=python#example
+
 #### step 1
 
 `rm -rf dubdubs-lambda-py/  
