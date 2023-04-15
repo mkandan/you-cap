@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
-from yt_dlp import YoutubeDL
 import os
 from faster_whisper import WhisperModel
 import time
 import sys
+from pytube import YouTube
 
 app = FastAPI()
 
@@ -16,36 +16,30 @@ async def download_from_storage_and_generate_new_caption(video_id: str, desired_
     # get default_language by doing a db query on video_id
     return {"message": "WIP"}
 
+@app.get("/pytube-download")
+async def pytube_download():
+    start_time = time.time()
+    
+    yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first()
+    yt.download()
+    file_name=yt.default_filename
+
+    # delete file from local storage
+    os.remove(file_name)
+
+    return {"message": "WIP","response_time":(time.time()-start_time),"file_name":file_name}
+
 @app.get("/download-from-YT-and-upload-and-generate-caption")
 async def download_from_YT_and_upload_and_generate_caption():
     start_time = time.time()
     
-    # (desired_language: str):
-    desired_language = 'en'
-
-    URLS = ['https://www.youtube.com/watch?v=gGZmi3UVSOI'] # apple audio
-
-    ydl_opts = {
-        'format': 'm4a/bestaudio/best',
-        'postprocessors': [{  # Extract audio using ffmpeg
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'm4a',
-        }],
-        'outtmpl': '%(id)s.%(ext)s'  # Output file template
-    }
-
-    with YoutubeDL(ydl_opts) as ydl:
-        ydl.download(URLS)
-
-    # get file path source of downloaded file from youtube
-    with YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(URLS[0], download=True)
-        file_path = ydl.prepare_filename(info_dict)  # Get the file path of the downloaded file
-        file_name = file_path.split('.')[0]
+    yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first()
+    yt.download()
+    file_path=yt.default_filename
 
     # run audio through faster_whisper
-    model_size='tiny' # INT8: 3.2s-3.5s 
-    # model_size='base' #3.8s
+    model_size='tiny' # INT8: 2.4s-2.7s 
+    # model_size='base' #2.5s-2.7s
     model = WhisperModel(model_size, device="cpu", compute_type="int8")
     # word-level timestamps & language info
     segments, info = model.transcribe(file_path, word_timestamps=True)
@@ -63,4 +57,4 @@ async def download_from_YT_and_upload_and_generate_caption():
     # delete file from local storage
     os.remove(file_path)
 
-    return {"version":sys.version,"language":info.language,"language_probability":info.language_probability,"captions": captions,"response_time":(time.time()-start_time)}
+    return {"language":info.language,"language_probability":info.language_probability,"captions": captions,"response_time":(time.time()-start_time)}

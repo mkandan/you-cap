@@ -1,5 +1,5 @@
 fastapi
 gunicorn
 uvicorn
-yt-dlp
+pytube
 faster_whisper
