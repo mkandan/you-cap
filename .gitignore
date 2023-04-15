@@ -2,3 +2,4 @@ dot.env
 *.m4a
 lib
 lambda_function.zip
+.vercel
