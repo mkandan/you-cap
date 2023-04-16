@@ -18,6 +18,14 @@ async def download_from_storage_and_generate_new_caption(video_id: str, desired_
     # get default_language by doing a db query on video_id
     return {"message": "WIP"}
 
+@app.get("/_ah/warmup")
+async def warmup():
+    print(__name__)
+    if __name__=='__main__':
+        print('00000000000000000')
+    # Handle your warmup logic here, e.g. set up a database connection pool
+    return '', 200, {}
+
 @app.get("/pytube-download")
 async def pytube_download():
     start_time = time.time()
@@ -29,7 +37,7 @@ async def pytube_download():
     # delete file from local storage
     os.remove(file_path)
 
-    return {"message": "WIP","response_time":(time.time()-start_time)}
+    return {"message": "WIP","response_time":(time.time()-start_time),"__name__":__name__,"os.environ.get(SERVER_SOFTWARE)":os.environ.get("SERVER_SOFTWARE")}
 
 @app.get("/download-from-YT-and-upload-and-generate-caption")
 async def download_from_YT_and_upload_and_generate_caption():
