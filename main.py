@@ -6,7 +6,7 @@ import sys
 from pytube import YouTube
 
 app = FastAPI()
-if(os.environ.get("GAE_ENV").startswith('standard')):
+if(os.environ.get("GAE_ENV")=='standard'):
     path_to_tmp_folder = '../../../tmp' # production api on GAE
 else:
     path_to_tmp_folder = 'tmp' # local api on personal device
