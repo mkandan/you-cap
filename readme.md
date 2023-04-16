@@ -13,11 +13,11 @@ then invoke the API with...
 
 ## API endpoints (Routes)
 
-#### pytube-download
+#### /pytube-download
 
 `curl http://127.0.0.1:8000/pytube-download` to download a youtube video's audio
 
-#### pytube-download-and-upload
+#### /pytube-download-and-upload
 
 `curl http://127.0.0.1:8000/download-from-YT-and-upload-and-generate-caption` to download a youtube video and pump through [faster_whisper](https://github.com/guillaumekln/faster-whisper) to generate timestamped captions
 
@@ -25,12 +25,16 @@ then invoke the API with...
 
 youtube tutorial i started with: https://tutlinks.com/deploy-fastapi-app-on-google-cloud-platform/
 
-### GCP App Engine pricing resources
+#### GCP App Engine pricing resources
 
 pricing calculator: https://cloud.google.com/products/calculator  
 free tier: https://cloud.google.com/free/docs/free-cloud-features#app-engine  
 instance classes: https://cloud.google.com/appengine/docs/standard/#second-gen-runtimes  
 updating `app.yaml` with preferences: https://cloud.google.com/appengine/docs/standard/reference/app-yaml?tab=python#example
+
+### the weird ../../../tmp thing? in `main.py`
+
+yea it's explained here https://cloud.google.com/appengine/docs/standard/using-temp-files?tab=python
 
 #### set yo self up for success
 
