@@ -6,8 +6,8 @@ import sys
 from pytube import YouTube
 
 app = FastAPI()
-# path_to_tmp_folder = '../../../tmp' # production api
-path_to_tmp_folder = 'tmp' # local api
+path_to_tmp_folder = '../../../tmp' # production api
+# path_to_tmp_folder = 'tmp' # local api
 
 @app.get("/")
 async def root():
