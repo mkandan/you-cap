@@ -6,8 +6,10 @@ import sys
 from pytube import YouTube
 
 app = FastAPI()
-path_to_tmp_folder = '../../../tmp' # production api
-# path_to_tmp_folder = 'tmp' # local api
+if(os.environ.get("GAE_ENV").startswith('standard')):
+    path_to_tmp_folder = '../../../tmp' # production api on GAE
+else:
+    path_to_tmp_folder = 'tmp' # local api on personal device
 
 @app.get("/")
 async def root():
@@ -21,8 +23,8 @@ async def download_from_storage_and_generate_new_caption(video_id: str, desired_
 @app.get("/_ah/warmup")
 async def warmup():
     # Handle your warmup logic here, e.g. set up a database connection pool
-    # return '', 200, {}, '
-    return {"__name__":__name__,"IS_APP_ENGINE with environ.get":os.environ.get("IS_APP_ENGINE"),"GAE_ENV with getenv":os.getenv("GAE_ENV",""),"GAE_ENV with environ.get":os.environ.get("GAE_ENV")}
+    await download_from_YT_and_upload_and_generate_caption()
+    return '', 200, {}
 
 @app.get("/pytube-download")
 async def pytube_download():
@@ -36,7 +38,7 @@ async def pytube_download():
     os.remove(file_path)
 
     # return {"message": "WIP","response_time":(time.time()-start_time)}
-    return {"message": "WIP","response_time":(time.time()-start_time),"__name__":__name__,"IS_APP_ENGINE with environ.get":os.environ.get("IS_APP_ENGINE"),"GAE_ENV with getenv":os.getenv("GAE_ENV",""),"GAE_ENV with environ.get":os.environ.get("GAE_ENV")}
+    return {"message": "WIP","response_time":(time.time()-start_time)}
 
 @app.get("/download-from-YT-and-upload-and-generate-caption")
 async def download_from_YT_and_upload_and_generate_caption():

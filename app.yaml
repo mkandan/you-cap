@@ -1,5 +1,5 @@
 runtime: python39
 entrypoint: gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app
 instance_class: F4
-env_variables:
-  IS_APP_ENGINE: 1
+inbound_services:
+  - warmup
