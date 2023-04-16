@@ -24,7 +24,8 @@ async def warmup():
     if __name__=='__main__':
         print('00000000000000000')
     # Handle your warmup logic here, e.g. set up a database connection pool
-    return '', 200, {}
+    # return '', 200, {}, '
+    return {"__name__":__name__,"os.environ.get(SERVER_SOFTWARE)":os.environ.get("SERVER_SOFTWARE")}
 
 @app.get("/pytube-download")
 async def pytube_download():
