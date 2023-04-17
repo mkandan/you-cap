@@ -27,7 +27,7 @@ async def download_from_storage_and_generate_new_caption(video_id: str, desired_
 @app.get("/_ah/warmup")
 async def warmup():
     # Handle your warmup logic here, e.g. set up a database connection pool
-    await download_from_YT_and_upload_and_generate_caption()
+    await download_from_YT_and_upload_and_generate_caption('https://www.youtube.com/watch?v=gGZmi3UVSOI','en')
     return '', 200, {}
 
 @app.get("/pytube-download")
