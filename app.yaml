@@ -1,3 +1,5 @@
 runtime: python39
-entrypoint: gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app
+entrypoint: gunicorn -t 120 -w 1 -k uvicorn.workers.UvicornWorker main:app
 instance_class: F4
+inbound_services:
+  - warmup

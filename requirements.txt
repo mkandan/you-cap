@@ -3,3 +3,4 @@ gunicorn
 uvicorn
 pytube
 faster_whisper
+# openai-whisper

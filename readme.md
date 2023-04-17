@@ -38,9 +38,11 @@ yea it's explained here https://cloud.google.com/appengine/docs/standard/using-t
 
 #### set yo self up for success
 
-`rm -rf dubdubs-lambda-py/`  
-`git clone -b https://github.com/mkandan/dubdubs-lambda-py.git`  
-`cd dubdubs-lambda-py/`  
+`rm -rf gae-pytube/ && git clone -b warmup-requests https://github.com/mkandan/gae-pytube.git && cd gae-pytube/ && virtualenv env && source env/bin/activate && pip install -r requirements.txt && gunicorn -w 1 -k uvicorn.workers.UvicornWorker main:app`
+
+`rm -rf gae-pytube/`  
+`git clone -b https://github.com/mkandan/gae-pytube.git`  
+`cd gae-pytube/`  
 `virtualenv env`  
 `source env/bin/activate`  
 `pip install -r requirements.txt`  
@@ -49,6 +51,8 @@ yea it's explained here https://cloud.google.com/appengine/docs/standard/using-t
 Change the numerical value in `gunicorn` to the number of workers you want to run.
 
 #### success (ideally)
+
+`gcloud app create && gcloud app deploy app.yaml && gcloud app browse`
 
 `gcloud app create`
 `gcloud app deploy app.yaml`
