@@ -3,3 +3,4 @@ dot.env
 lib
 lambda_function.zip
 tmp
+.DS_Store
