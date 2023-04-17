@@ -45,14 +45,16 @@ async def pytube_download():
     return {"message": "WIP","response_time":(time.time()-start_time)}
 
 @app.get("/download-from-YT-and-upload-and-generate-caption")
-async def download_from_YT_and_upload_and_generate_caption():
+async def download_from_YT_and_upload_and_generate_caption(yt_url: str, desired_language: str):
     start_time = time.time()
     
+    # download from YT
+    yt = YouTube(yt_url).streams.filter(only_audio=True).first()
     # yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first() #apple
     # yt = YouTube('https://www.youtube.com/watch?v=j_QH5wF9XBg').streams.filter(only_audio=True).first() #theo
     # yt = YouTube('https://www.youtube.com/watch?v=hBgEx4m-ejo').streams.filter(only_audio=True).first() #mbapp interview
 
-    yt = YouTube('https://www.youtube.com/watch?v=u7j--YMXZtA').streams.filter(only_audio=True).first() #mbappe song causes semaphore leak or registers at TR (turkish??)
+    # yt = YouTube('https://www.youtube.com/watch?v=u7j--YMXZtA').streams.filter(only_audio=True).first() #mbappe song causes semaphore leak or registers at TR (turkish??)
 
     yt.download(output_path=path_to_tmp_folder)
     file_path=path_to_tmp_folder+'/'+yt.default_filename
@@ -65,10 +67,13 @@ async def download_from_YT_and_upload_and_generate_caption():
     # Model: faster-whisper
     ###############################
     model = WhisperModel(model_size, device="cpu", compute_type="int8")
-    segments, info = model.transcribe(file_path)
+    # segments, info = model.transcribe(file_path)
+    segments, info = model.transcribe(file_path,language=desired_language)
     language, language_probability, duration = info
 
     # making segments prettier --> captions
+    only_words_from_captions = []
+
     captions = []
     for segment in segments:
         captions.append({
@@ -79,6 +84,7 @@ async def download_from_YT_and_upload_and_generate_caption():
             "segment_confidence": segment[4],
             "word_confidence": segment[5]
         })
+        only_words_from_captions.append(segment[2])
 
     ###############################
     # Model: whisper
@@ -98,4 +104,4 @@ async def download_from_YT_and_upload_and_generate_caption():
     # delete file from local storage
     os.remove(file_path)
 
-    return{"response_time":(time.time()-start_time),"info":info,"captions":captions,"language":language,"language_probability":language_probability,"duration":duration}
+    return{"response_time":(time.time()-start_time),"info":info,"captions":captions,"language":language,"language_probability":language_probability,"duration":duration,"only_words_from_captions":only_words_from_captions}
