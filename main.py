@@ -1,11 +1,15 @@
 from fastapi import FastAPI, HTTPException
 import os
-from faster_whisper import WhisperModel
 import time
 import sys
 from pytube import YouTube
 
+from faster_whisper import WhisperModel
+# import whisper
+
 app = FastAPI()
+
+# automatically detects if running on GAE or local. this affects /tmp folder path
 if(os.environ.get("GAE_ENV")=='standard'):
     path_to_tmp_folder = '../../../tmp' # production api on GAE
 else:
@@ -44,28 +48,54 @@ async def pytube_download():
 async def download_from_YT_and_upload_and_generate_caption():
     start_time = time.time()
     
-    yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first()
+    # yt = YouTube('https://www.youtube.com/watch?v=gGZmi3UVSOI').streams.filter(only_audio=True).first() #apple
+    # yt = YouTube('https://www.youtube.com/watch?v=j_QH5wF9XBg').streams.filter(only_audio=True).first() #theo
+    # yt = YouTube('https://www.youtube.com/watch?v=hBgEx4m-ejo').streams.filter(only_audio=True).first() #mbapp interview
+
+    yt = YouTube('https://www.youtube.com/watch?v=u7j--YMXZtA').streams.filter(only_audio=True).first() #mbappe song causes semaphore leak or registers at TR (turkish??)
+
     yt.download(output_path=path_to_tmp_folder)
     file_path=path_to_tmp_folder+'/'+yt.default_filename
 
     # run audio through faster_whisper
     model_size='tiny' # INT8: 2.4s-2.7s 
     # model_size='base' #2.5s-2.7s
-    model = WhisperModel(model_size, device="cpu", compute_type="int8")
-    # word-level timestamps & language info
-    segments, info = model.transcribe(file_path, word_timestamps=True)
 
+    ###############################
+    # Model: faster-whisper
+    ###############################
+    model = WhisperModel(model_size, device="cpu", compute_type="int8")
+    segments, info = model.transcribe(file_path)
+    language, language_probability, duration = info
+
+    # making segments prettier --> captions
     captions = []
     for segment in segments:
-        for word in segment.words:
-            captions.append({
-            "word": word.word,
-            "start": word.start,
-            "end": word.end,
-            "confidence": word.probability
-            })
+        captions.append({
+            "start": segment[0],
+            "end": segment[1],
+            "text": segment[2],
+            # "words": segment[3],
+            "segment_confidence": segment[4],
+            "word_confidence": segment[5]
+        })
+
+    ###############################
+    # Model: whisper
+    # paramters @ https://github.com/openai/whisper/blob/main/whisper/transcribe.py
+    # expanded DecodingOptions @ https://github.com/openai/whisper/blob/main/whisper/decoding.py
+    ###############################
+    # model = whisper.load_model(model_size) # or whatever model you prefer
+    # result = model.transcribe(file_path,fp16=False,language="fr")
+    # options = whisper.DecodingOptions(fp16=False,language="fr")
+    # result = model.transcribe(file_path, options)
+
+    # return {"message": "WIP","response_time":(time.time()-start_time),"text":result['text'],"segments":result['segments'],"language":result['language']}
+    ###############################
+    ###############################
+
         
     # delete file from local storage
     os.remove(file_path)
 
-    return {"language":info.language,"language_probability":info.language_probability,"captions": captions,"response_time":(time.time()-start_time)}
+    return{"response_time":(time.time()-start_time),"info":info,"captions":captions,"language":language,"language_probability":language_probability,"duration":duration}
